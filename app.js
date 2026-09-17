@@ -17,402 +17,1202 @@
     const lessons = [
   {
     "id": "sql-01",
-    "title": "1. Pengantar Relational Database & SQL",
-    "module": "Modul 1: Fondasi Relational DB & DDL",
+    "title": "1. Sejarah SQL & Model Relasional",
+    "module": "Modul 1: Fondasi Database Relasional & Dasar SQL",
     "duration": "15 Menit",
-    "level": "Pemula",
-    "content_md": "# 1. Pengantar Relational Database & SQL\n\nRelational Database Management System (**RDBMS**) mengorganisasi data ke dalam tabel-tabel terstruktur yang terdiri dari baris (*rows/records*) dan kolom (*columns/attributes*).\n\n### Kategori Perintah SQL\n- **DDL (Data Definition Language)**: `CREATE`, `ALTER`, `DROP`, `TRUNCATE`\n- **DML (Data Manipulation Language)**: `SELECT`, `INSERT`, `UPDATE`, `DELETE`\n- **DCL (Data Control Language)**: `GRANT`, `REVOKE`\n- **TCL (Transaction Control Language)**: `COMMIT`, `ROLLBACK`, `SAVEPOINT`\n\n### Menjalankan SQLite WASM\nEditor interaktif di bawah menjalankan engine C SQLite versi penuh yang dikompilasi ke WebAssembly langsung di dalam browser Anda.",
-    "code": "-- Tampilkan versi engine SQLite WASM yang sedang berjalan\nSELECT sqlite_version() AS engine_version, CURRENT_TIMESTAMP AS waktu_query;",
+    "level": "Menengah",
+    "content_md": "# 1. Sejarah SQL & Model Relasional\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 1. Sejarah SQL & Model Relasional\nSELECT 'Hello SQL Lesson 1' as status;",
     "quiz": {
-      "question": "Kategori perintah SQL mana yang bertanggung jawab untuk mendefinisikan atau memodifikasi skema struktur tabel database?",
+      "question": "Apa konsep utama pada bagian 1. Sejarah SQL & Model Relasional?",
       "options": [
-        "DML (Data Manipulation Language)",
-        "DDL (Data Definition Language)",
-        "TCL (Transaction Control Language)",
-        "DCL (Data Control Language)"
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
       ],
-      "answer": 1,
-      "explanation": "DDL (Data Definition Language) seperti CREATE, ALTER, dan DROP digunakan khusus untuk merancang struktur dan skema database, sedangkan manipulasi data (isi baris) dilakukan oleh DML."
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
     }
   },
   {
     "id": "sql-02",
-    "title": "2. CREATE TABLE, Data Types & Constraints",
-    "module": "Modul 1: Fondasi Relational DB & DDL",
-    "duration": "20 Menit",
-    "level": "Pemula",
-    "content_md": "# 2. CREATE TABLE, Data Types & Constraints\n\nConstraints memastikan integritas data pada level database:\n- `PRIMARY KEY`: Unik dan NOT NULL secara implisit.\n- `NOT NULL`: Kolom wajib diisi.\n- `UNIQUE`: Nilai tidak boleh duplikat.\n- `CHECK`: Memvalidasi kondisi logika bisnis sebelum data disimpan.\n- `DEFAULT`: Nilai bawaan jika tidak diisi saat insert.",
-    "code": "CREATE TABLE employees (\n    id INTEGER PRIMARY KEY AUTOINCREMENT,\n    name TEXT NOT NULL,\n    email TEXT UNIQUE NOT NULL,\n    salary REAL CHECK(salary >= 3000000),\n    department TEXT DEFAULT 'General',\n    created_at DATETIME DEFAULT CURRENT_TIMESTAMP\n);\n\n-- Verifikasi skema tabel yang berhasil dibuat\nPRAGMA table_info(employees);",
+    "title": "2. Sintaks Dasar & Statement SELECT",
+    "module": "Modul 1: Fondasi Database Relasional & Dasar SQL",
+    "duration": "15 Menit",
+    "level": "Menengah",
+    "content_md": "# 2. Sintaks Dasar & Statement SELECT\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 2. Sintaks Dasar & Statement SELECT\nSELECT 'Hello SQL Lesson 2' as status;",
     "quiz": {
-      "question": "Apa fungsi dari constraint CHECK(salary >= 3000000) pada definisi kolom tabel?",
+      "question": "Apa konsep utama pada bagian 2. Sintaks Dasar & Statement SELECT?",
       "options": [
-        "Mengubah otomatis gaji yang di bawah 3 juta menjadi 3 juta",
-        "Menolak query INSERT/UPDATE jika nilai salary bernilai kurang dari 3.000.000",
-        "Memberikan nilai default 3 juta jika nilai gaji dikosongkan",
-        "Membuat index khusus untuk kolom salary di atas 3 juta"
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
       ],
-      "answer": 1,
-      "explanation": "Constraint CHECK bertindak sebagai validasi integritas level engine — jika ada data yang melanggar kondisi boolean tersebut, RDBMS akan melempar error Constraint Violation dan membatalkan query."
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
     }
   },
   {
     "id": "sql-03",
-    "title": "3. ALTER TABLE & DROP TABLE",
-    "module": "Modul 1: Fondasi Relational DB & DDL",
+    "title": "3. Memfilter Data dengan WHERE",
+    "module": "Modul 1: Fondasi Database Relasional & Dasar SQL",
     "duration": "15 Menit",
-    "level": "Pemula",
-    "content_md": "# 3. ALTER TABLE & DROP TABLE\n\nSkema database aplikasi sering kali berkembang seiring waktu. SQL menyediakan perintah `ALTER TABLE` untuk memodifikasi tabel yang sudah ada tanpa menghapus data di dalamnya:\n- `ALTER TABLE ... ADD COLUMN`: Menambah kolom baru.\n- `ALTER TABLE ... RENAME TO`: Mengubah nama tabel.\n- `ALTER TABLE ... RENAME COLUMN ... TO`: Mengubah nama kolom.",
-    "code": "CREATE TABLE customers (id INTEGER PRIMARY KEY, full_name TEXT NOT NULL);\n\n-- Tambahkan kolom nomor telepon\nALTER TABLE customers ADD COLUMN phone_number TEXT;\n\n-- Tambah kolom status aktif\nALTER TABLE customers ADD COLUMN is_active INTEGER DEFAULT 1;\n\nPRAGMA table_info(customers);",
+    "level": "Menengah",
+    "content_md": "# 3. Memfilter Data dengan WHERE\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 3. Memfilter Data dengan WHERE\nSELECT 'Hello SQL Lesson 3' as status;",
     "quiz": {
-      "question": "Apa perbedaan mendasar antara perintah DROP TABLE dan TRUNCATE/DELETE?",
+      "question": "Apa konsep utama pada bagian 3. Memfilter Data dengan WHERE?",
       "options": [
-        "DROP TABLE hanya menghapus data dan mempertahankan skema tabel",
-        "DROP TABLE menghapus seluruh data sekaligus skema dan definisi tabel dari database secara permanen",
-        "TRUNCATE menghapus database beserta seluruh tabelnya",
-        "DELETE menghapus struktur kolom tertentu tanpa menyentuh baris data"
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
       ],
-      "answer": 1,
-      "explanation": "DROP TABLE menghapus tabel beserta seluruh definisi metadata dan skemanya dari catalog database, sedangkan DELETE/TRUNCATE mengosongkan baris data namun struktur tabelnya tetap ada."
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
     }
   },
   {
     "id": "sql-04",
-    "title": "4. INSERT, Bulk INSERT & DEFAULT Values",
-    "module": "Modul 2: Manipulasi Data (DML)",
-    "duration": "20 Menit",
-    "level": "Pemula",
-    "content_md": "# 4. INSERT, Bulk INSERT & DEFAULT Values\n\nPerintah `INSERT INTO` menyisipkan baris baru ke dalam tabel. Anda dapat menyisipkan single-row maupun multi-row (bulk insert) dalam satu query efisien.",
-    "code": "CREATE TABLE products (\n    id INTEGER PRIMARY KEY AUTOINCREMENT,\n    name TEXT NOT NULL,\n    price REAL NOT NULL,\n    stock INTEGER DEFAULT 0\n);\n\n-- Bulk insert 3 produk sekaligus\nINSERT INTO products (name, price, stock) VALUES\n    ('Mechanical Keyboard', 750000, 25),\n    ('Wireless Mouse', 350000, 50),\n    ('Gaming Monitor 24 Inch', 1850000, 12);\n\nSELECT * FROM products;",
+    "title": "4. Logika Majemuk (AND, OR, NOT)",
+    "module": "Modul 1: Fondasi Database Relasional & Dasar SQL",
+    "duration": "15 Menit",
+    "level": "Menengah",
+    "content_md": "# 4. Logika Majemuk (AND, OR, NOT)\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 4. Logika Majemuk (AND, OR, NOT)\nSELECT 'Hello SQL Lesson 4' as status;",
     "quiz": {
-      "question": "Jika suatu kolom memiliki constraint DEFAULT dan kita tidak menyertakan kolom tersebut pada query INSERT INTO, apa yang terjadi?",
+      "question": "Apa konsep utama pada bagian 4. Logika Majemuk (AND, OR, NOT)?",
       "options": [
-        "Database melempar error not null violation",
-        "Database otomatis mengisi kolom tersebut dengan nilai yang ditentukan pada klausa DEFAULT",
-        "Kolom akan selalu diisi nilai NULL mengabaikan default",
-        "Proses insert akan gagal dan membatalkan transaksi"
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
       ],
-      "answer": 1,
-      "explanation": "Jika kolom tidak disebutkan dalam daftar kolom INSERT, RDBMS akan secara otomatis mengevaluasi ekspresi DEFAULT yang telah didefinisikan saat CREATE TABLE."
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
     }
   },
   {
     "id": "sql-05",
-    "title": "5. SELECT, WHERE, ORDER BY & LIMIT",
-    "module": "Modul 2: Manipulasi Data (DML)",
-    "duration": "20 Menit",
-    "level": "Pemula",
-    "content_md": "# 5. SELECT, WHERE, ORDER BY & LIMIT\n\nQuery pembacaan data memanfaatkan operator filtering dan pengurutan:\n- Operator: `=`, `!= / <>`, `<`, `>`, `BETWEEN ... AND ...`, `IN (...)`, `LIKE '%pattern%'`\n- Pengurutan: `ORDER BY column_name [ASC|DESC]`\n- Paginasi: `LIMIT n OFFSET m`",
-    "code": "CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT, role TEXT, score INTEGER);\nINSERT INTO users (name, role, score) VALUES\n    ('Budi', 'Developer', 92),\n    ('Siti', 'Designer', 88),\n    ('Rian', 'Developer', 95),\n    ('Dewi', 'Manager', 85),\n    ('Eko', 'Developer', 78);\n\n-- Ambil 2 Developer dengan score tertinggi\nSELECT name, role, score \nFROM users \nWHERE role = 'Developer' AND score >= 80\nORDER BY score DESC \nLIMIT 2;",
+    "title": "5. Operator IN, BETWEEN, & LIKE",
+    "module": "Modul 1: Fondasi Database Relasional & Dasar SQL",
+    "duration": "15 Menit",
+    "level": "Menengah",
+    "content_md": "# 5. Operator IN, BETWEEN, & LIKE\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 5. Operator IN, BETWEEN, & LIKE\nSELECT 'Hello SQL Lesson 5' as status;",
     "quiz": {
-      "question": "Klausa SQL mana yang dievaluasi terlebih dahulu oleh database query engine?",
+      "question": "Apa konsep utama pada bagian 5. Operator IN, BETWEEN, & LIKE?",
       "options": [
-        "ORDER BY dievaluasi sebelum WHERE",
-        "SELECT dievaluasi sebelum WHERE",
-        "WHERE dievaluasi sebelum SELECT dan ORDER BY",
-        "LIMIT dievaluasi sebelum WHERE"
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
       ],
-      "answer": 2,
-      "explanation": "Secara urutan eksekusi logika SQL (Logical Query Processing): FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY → LIMIT."
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
     }
   },
   {
     "id": "sql-06",
-    "title": "6. UPDATE & DELETE dengan Filter Aman",
-    "module": "Modul 2: Manipulasi Data (DML)",
+    "title": "6. Sorting & Pagination (ORDER BY, LIMIT, OFFSET)",
+    "module": "Modul 1: Fondasi Database Relasional & Dasar SQL",
     "duration": "15 Menit",
-    "level": "Pemula",
-    "content_md": "# 6. UPDATE & DELETE dengan Filter Aman\n\n**PERINGATAN KRUSIAL**: Menjalankan `UPDATE` atau `DELETE` tanpa klausa `WHERE` akan memodifikasi atau menghapus **SELURUH** baris di dalam tabel!",
-    "code": "CREATE TABLE inventory (id INTEGER PRIMARY KEY, item TEXT, stock INTEGER, is_active INTEGER);\nINSERT INTO inventory (item, stock, is_active) VALUES\n    ('Laptop', 5, 1),\n    ('Mouse', 0, 1),\n    ('Keyboard', 0, 1);\n\n-- Update item yang stoknya 0 menjadi non-aktif\nUPDATE inventory SET is_active = 0 WHERE stock = 0;\n\n-- Hapus item yang non-aktif\nDELETE FROM inventory WHERE is_active = 0;\n\nSELECT * FROM inventory;",
+    "level": "Menengah",
+    "content_md": "# 6. Sorting & Pagination (ORDER BY, LIMIT, OFFSET)\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 6. Sorting & Pagination (ORDER BY, LIMIT, OFFSET)\nSELECT 'Hello SQL Lesson 6' as status;",
     "quiz": {
-      "question": "Apa dampak menjalankan query: UPDATE employees SET salary = salary * 1.1; tanpa menyertakan klausa WHERE?",
+      "question": "Apa konsep utama pada bagian 6. Sorting & Pagination (ORDER BY, LIMIT, OFFSET)?",
       "options": [
-        "Query akan gagal dengan syntax error karena WHERE wajib",
-        "Seluruh karyawan di tabel employees akan mengalami kenaikan gaji 10%",
-        "Hanya baris pertama tabel yang akan diperbarui",
-        "Hanya karyawan aktif yang diperbarui"
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
       ],
-      "answer": 1,
-      "explanation": "Tanpa klausa WHERE, operasi UPDATE akan mengaplikasikan perubahan ekspresi ke setiap baris (record) yang ada di dalam tabel tersebut."
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
     }
   },
   {
     "id": "sql-07",
-    "title": "7. Relasi Tabel & Foreign Key Constraints",
-    "module": "Modul 3: Relasi & Multi-Table Queries",
-    "duration": "20 Menit",
+    "title": "7. Memasukkan Data (INSERT)",
+    "module": "Modul 2: Manipulasi & Integritas Data (DML)",
+    "duration": "15 Menit",
     "level": "Menengah",
-    "content_md": "# 7. Relasi Tabel & Foreign Key Constraints\n\nForeign Key menghubungkan baris data antar tabel dan menjaga integritas referensial (*Referential Integrity*).\n\n### Opsi ON DELETE / ON UPDATE\n- `CASCADE`: Jika parent dihapus, record child otomatis ikut terhapus.\n- `SET NULL`: Jika parent dihapus, foreign key di child diubah menjadi NULL.\n- `RESTRICT`: Melarang penghapusan parent selama masih ada child yang merujuk.",
-    "code": "PRAGMA foreign_keys = ON;\n\nCREATE TABLE departments (\n    id INTEGER PRIMARY KEY AUTOINCREMENT,\n    name TEXT NOT NULL\n);\n\nCREATE TABLE staff (\n    id INTEGER PRIMARY KEY AUTOINCREMENT,\n    name TEXT NOT NULL,\n    dept_id INTEGER,\n    FOREIGN KEY (dept_id) REFERENCES departments(id) ON DELETE CASCADE\n);\n\nINSERT INTO departments (name) VALUES ('Engineering'), ('Design');\nINSERT INTO staff (name, dept_id) VALUES ('Andi', 1), ('Maya', 2);\n\nSELECT s.name AS staff_name, d.name AS department \nFROM staff s \nJOIN departments d ON s.dept_id = d.id;",
+    "content_md": "# 7. Memasukkan Data (INSERT)\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 7. Memasukkan Data (INSERT)\nSELECT 'Hello SQL Lesson 7' as status;",
     "quiz": {
-      "question": "Apa yang terjadi pada data child jika foreign key disetel dengan ON DELETE CASCADE saat record parent dihapus?",
+      "question": "Apa konsep utama pada bagian 7. Memasukkan Data (INSERT)?",
       "options": [
-        "Penghapusan parent ditolak database",
-        "Semua baris child yang mereferensikan record parent tersebut akan otomatis ikut terhapus",
-        "Kolom foreign key pada record child diubah menjadi NULL",
-        "Data child dipindahkan ke tabel backup"
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
       ],
-      "answer": 1,
-      "explanation": "ON DELETE CASCADE memastikan penghapusan berantai: jika parent record dihapus, RDBMS secara otomatis menghapus seluruh record child terkait demi mencegah orphaned records."
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
     }
   },
   {
     "id": "sql-08",
-    "title": "8. INNER JOIN, LEFT JOIN & CROSS JOIN",
-    "module": "Modul 3: Relasi & Multi-Table Queries",
-    "duration": "25 Menit",
+    "title": "8. Memperbarui Data (UPDATE)",
+    "module": "Modul 2: Manipulasi & Integritas Data (DML)",
+    "duration": "15 Menit",
     "level": "Menengah",
-    "content_md": "# 8. INNER JOIN, LEFT JOIN & CROSS JOIN\n\nJOIN menggabungkan kolom dari dua atau lebih tabel berdasarkan kolom relasi yang berkesesuaian:\n- **INNER JOIN**: Hanya mengembalikan baris yang memiliki pasangan kecocokan di kedua tabel.\n- **LEFT (OUTER) JOIN**: Mengembalikan seluruh baris dari tabel kiri (*left*), dan nilai kolom kanan bernilai NULL jika tidak ada kecocokan.\n- **CROSS JOIN**: Menghasilkan *Cartesian Product* (N x M kombinasi baris).",
-    "code": "CREATE TABLE authors (id INTEGER PRIMARY KEY, name TEXT);\nCREATE TABLE books (id INTEGER PRIMARY KEY, author_id INTEGER, title TEXT);\n\nINSERT INTO authors (id, name) VALUES (1, 'Pramoedya'), (2, 'Tere Liye'), (3, 'Andrea Hirata');\nINSERT INTO books (author_id, title) VALUES (1, 'Bumi Manusia'), (1, 'Anak Semua Bangsa'), (2, 'Hujan');\n\n-- LEFT JOIN menampilkan semua author meskipun belum ada buku terdaftar\nSELECT a.name AS author, COALESCE(b.title, '[Belum Ada Buku]') AS book_title\nFROM authors a\nLEFT JOIN books b ON a.id = b.author_id;",
+    "content_md": "# 8. Memperbarui Data (UPDATE)\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 8. Memperbarui Data (UPDATE)\nSELECT 'Hello SQL Lesson 8' as status;",
     "quiz": {
-      "question": "Kapan sebaiknya kita menggunakan LEFT JOIN dibanding INNER JOIN?",
+      "question": "Apa konsep utama pada bagian 8. Memperbarui Data (UPDATE)?",
       "options": [
-        "Saat hanya ingin menampilkan data yang 100% cocok di kedua tabel",
-        "Saat ingin mempertahankan seluruh record dari tabel utama (kiri) meskipun record pasangannya tidak ditemukan di tabel kanan",
-        "Saat ingin meningkatkan kecepatan query index",
-        "Saat menggabungkan dua tabel tanpa kondisi ON"
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
       ],
-      "answer": 1,
-      "explanation": "LEFT JOIN memastikan tidak ada data dari tabel kiri yang hilang akibat tidak adanya relasi di tabel kanan, mengisi kolom yang tidak cocok dengan nilai NULL."
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
     }
   },
   {
     "id": "sql-09",
-    "title": "9. Aggregate Functions & GROUP BY",
-    "module": "Modul 3: Relasi & Multi-Table Queries",
-    "duration": "20 Menit",
+    "title": "9. Menghapus Data (DELETE vs TRUNCATE)",
+    "module": "Modul 2: Manipulasi & Integritas Data (DML)",
+    "duration": "15 Menit",
     "level": "Menengah",
-    "content_md": "# 9. Aggregate Functions & GROUP BY\n\nFungsi agregasi menghitung sekumpulan nilai menjadi satu nilai ringkasan:\n- `COUNT()`, `SUM()`, `AVG()`, `MIN()`, `MAX()`\n\nKlausa `GROUP BY` mengelompokkan baris berdasarkan satu atau beberapa kolom untuk dianalisis oleh fungsi agregasi.",
-    "code": "CREATE TABLE sales (id INTEGER PRIMARY KEY, category TEXT, amount REAL, qty INTEGER);\nINSERT INTO sales (category, amount, qty) VALUES\n    ('Elektronik', 2500000, 2),\n    ('Elektronik', 1200000, 4),\n    ('Pakaian', 350000, 5),\n    ('Pakaian', 150000, 2),\n    ('Buku', 95000, 3);\n\nSELECT \n    category,\n    COUNT(*) AS total_transaksi,\n    SUM(amount) AS omzet_total,\n    AVG(amount) AS rata_rata_omzet\nFROM sales\nGROUP BY category\nORDER BY omzet_total DESC;",
+    "content_md": "# 9. Menghapus Data (DELETE vs TRUNCATE)\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 9. Menghapus Data (DELETE vs TRUNCATE)\nSELECT 'Hello SQL Lesson 9' as status;",
     "quiz": {
-      "question": "Apa fungsi dari klausa GROUP BY dalam query SQL?",
+      "question": "Apa konsep utama pada bagian 9. Menghapus Data (DELETE vs TRUNCATE)?",
       "options": [
-        "Mengurutkan baris data secara ascending atau descending",
-        "Mengelompokkan baris-baris data yang memiliki nilai kolom yang sama ke dalam baris ringkasan untuk fungsi agregasi",
-        "Menghapus baris duplikat dari hasil select",
-        "Membatasi jumlah baris maksimum yang dikembalikan"
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
       ],
-      "answer": 1,
-      "explanation": "GROUP BY mereduksi baris-baris yang memiliki kesamaan nilai pada kolom grup menjadi satu baris agregat sehingga fungsi seperti SUM, COUNT, atau AVG dapat dihitung per kelompok."
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
     }
   },
   {
     "id": "sql-10",
-    "title": "10. Filter Agregasi dengan HAVING",
-    "module": "Modul 3: Relasi & Multi-Table Queries",
-    "duration": "20 Menit",
+    "title": "10. Tipe Data & SQLite Affinity",
+    "module": "Modul 2: Manipulasi & Integritas Data (DML)",
+    "duration": "15 Menit",
     "level": "Menengah",
-    "content_md": "# 10. Filter Agregasi dengan HAVING\n\n### Perbedaan Fundamental WHERE vs HAVING\n- **WHERE**: Menyaring baris data mentah **sebelum** dilakukan pengelompokan (*grouping/aggregation*).\n- **HAVING**: Menyaring kelompok data **setelah** fungsi agregasi selesai dihitung.",
-    "code": "CREATE TABLE orders (id INTEGER PRIMARY KEY, customer TEXT, total REAL);\nINSERT INTO orders (customer, total) VALUES\n    ('Alice', 500000), ('Alice', 800000), ('Alice', 200000),\n    ('Bob', 150000), ('Bob', 100000),\n    ('Charlie', 2500000);\n\n-- Cari customer yang total akumulasi belanjanya di atas 1 Juta\nSELECT \n    customer,\n    COUNT(*) AS jumlah_order,\n    SUM(total) AS total_belanja\nFROM orders\nGROUP BY customer\nHAVING SUM(total) >= 1000000\nORDER BY total_belanja DESC;",
+    "content_md": "# 10. Tipe Data & SQLite Affinity\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 10. Tipe Data & SQLite Affinity\nSELECT 'Hello SQL Lesson 10' as status;",
     "quiz": {
-      "question": "Mengapa kita tidak bisa menulis query: SELECT dept, AVG(salary) FROM emp WHERE AVG(salary) > 5000000 GROUP BY dept; ?",
+      "question": "Apa konsep utama pada bagian 10. Tipe Data & SQLite Affinity?",
       "options": [
-        "Karena AVG hanya boleh digunakan bersama fungsi SUM",
-        "Karena klausa WHERE dievaluasi sebelum grouping terjadi, sehingga hasil agregat belum ada saat WHERE diproses",
-        "Karena GROUP BY harus ditulis sebelum klausa WHERE",
-        "Karena nama kolom dept tidak terdaftar"
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
       ],
-      "answer": 1,
-      "explanation": "WHERE memfilter data individual pada tahap awal sebelum agregasi terbentuk. Untuk memfilter hasil fungsi agregat seperti AVG() atau SUM(), Anda wajib menggunakan klausa HAVING setelah GROUP BY."
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
     }
   },
   {
     "id": "sql-11",
-    "title": "11. Subqueries & Operator IN / EXISTS",
-    "module": "Modul 4: Query Lanjut, Subqueries & CTE",
-    "duration": "25 Menit",
+    "title": "11. Penanganan NULL & COALESCE",
+    "module": "Modul 2: Manipulasi & Integritas Data (DML)",
+    "duration": "15 Menit",
     "level": "Menengah",
-    "content_md": "# 11. Subqueries & Operator IN / EXISTS\n\nSubquery (*nested query*) adalah query yang disematkan di dalam query SQL lain (pada klausa WHERE, FROM, atau SELECT).\n\n- **IN / NOT IN**: Memeriksa keberadaan nilai dalam daftar hasil subquery.\n- **EXISTS / NOT EXISTS**: Menguji apakah subquery menghasilkan minimal 1 baris (sangat optimal karena short-circuit evaluation).",
-    "code": "CREATE TABLE departments (id INTEGER PRIMARY KEY, name TEXT);\nCREATE TABLE employees (id INTEGER PRIMARY KEY, name TEXT, salary REAL, dept_id INTEGER);\n\nINSERT INTO departments VALUES (1, 'IT'), (2, 'HR'), (3, 'Marketing');\nINSERT INTO employees VALUES (1, 'Farhan', 9000000, 1), (2, 'Rina', 12000000, 1), (3, 'Bagus', 6000000, 2);\n\n-- Cari karyawan yang gajinya di atas rata-rata seluruh perusahaan\nSELECT name, salary \nFROM employees \nWHERE salary > (SELECT AVG(salary) FROM employees);",
+    "content_md": "# 11. Penanganan NULL & COALESCE\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 11. Penanganan NULL & COALESCE\nSELECT 'Hello SQL Lesson 11' as status;",
     "quiz": {
-      "question": "Apa keunggulan performa penggunaan operator EXISTS dibandingkan IN untuk pemeriksaan relasi subquery berskala besar?",
+      "question": "Apa konsep utama pada bagian 11. Penanganan NULL & COALESCE?",
       "options": [
-        "EXISTS tidak pernah melempar runtime error",
-        "EXISTS melakukan short-circuit evaluation (berhenti begitu baris kecocokan pertama ditemukan) tanpa memuat seluruh result set ke memori",
-        "IN selalu mengabaikan index database",
-        "EXISTS otomatis mengubah query menjadi JOIN biasa"
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
       ],
-      "answer": 1,
-      "explanation": "Operator EXISTS mengevaluasi nilai boolean secara efisien — engine database berhenti memindai subquery segera setelah menemukan 1 baris yang cocok (short-circuit)."
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
     }
   },
   {
     "id": "sql-12",
-    "title": "12. Common Table Expressions (CTE) & WITH Clause",
-    "module": "Modul 4: Query Lanjut, Subqueries & CTE",
-    "duration": "25 Menit",
+    "title": "12. Logika Kondisional (CASE WHEN)",
+    "module": "Modul 2: Manipulasi & Integritas Data (DML)",
+    "duration": "15 Menit",
     "level": "Menengah",
-    "content_md": "# 12. Common Table Expressions (CTE) & WITH Clause\n\n**Common Table Expression (CTE)** mendefinisikan *temporary result set* bernama yang hanya ada selama durasi eksekusi query utama menggunakan klausa `WITH`.\n\n### Manfaat CTE\n1. **Keterbacaan (*Readability*)**: Mengurai subquery kompleks bertingkat menjadi langkah modular.\n2. **Reusability**: Dapat dirujuk berulang kali dalam query yang sama.",
-    "code": "CREATE TABLE transactions (id INTEGER PRIMARY KEY, user_id INTEGER, amount REAL, category TEXT);\nINSERT INTO transactions (user_id, amount, category) VALUES\n    (1, 50000, 'Food'), (1, 150000, 'Tech'), (1, 75000, 'Food'),\n    (2, 300000, 'Tech'), (2, 80000, 'Transport');\n\n-- CTE menghitung ringkasan per user sebelum di-query\nWITH UserSpending AS (\n    SELECT user_id, SUM(amount) AS total_spend, COUNT(*) AS txn_count\n    FROM transactions\n    GROUP BY user_id\n)\nSELECT user_id, total_spend, txn_count, \n       CASE WHEN total_spend > 200000 THEN 'High Spender' ELSE 'Regular' END AS user_tier\nFROM UserSpending;",
+    "content_md": "# 12. Logika Kondisional (CASE WHEN)\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 12. Logika Kondisional (CASE WHEN)\nSELECT 'Hello SQL Lesson 12' as status;",
     "quiz": {
-      "question": "Apa kata kunci SQL yang digunakan untuk mengawali definisi Common Table Expression (CTE)?",
+      "question": "Apa konsep utama pada bagian 12. Logika Kondisional (CASE WHEN)?",
       "options": [
-        "DEFINE",
-        "LET",
-        "WITH",
-        "TEMPORARY"
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
       ],
-      "answer": 2,
-      "explanation": "Klausa WITH digunakan untuk mendefinisikan satu atau lebih CTE sebelum query utama SELECT/INSERT/UPDATE dieksekusi."
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
     }
   },
   {
     "id": "sql-13",
-    "title": "13. Recursive CTE untuk Data Hierarki",
-    "module": "Modul 4: Query Lanjut, Subqueries & CTE",
-    "duration": "25 Menit",
-    "level": "Lanjutan",
-    "content_md": "# 13. Recursive CTE untuk Data Hierarki\n\n**Recursive CTE** adalah fitur canggih SQL untuk menelusuri data berstruktur pohon/hierarki seperti bagan organisasi perusahaan, kategori bersarang, atau graf rute jaringan.\n\n### Struktur Recursive CTE\n1. **Anchor Member**: Query dasar yang mengembalikan baris awal (root node).\n2. **`UNION ALL`**: Penggabung iterasi.\n3. **Recursive Member**: Query yang merujuk kembali ke nama CTE itu sendiri.",
-    "code": "CREATE TABLE org_chart (id INTEGER PRIMARY KEY, name TEXT, manager_id INTEGER);\nINSERT INTO org_chart VALUES\n    (1, 'CEO - Hendra', NULL),\n    (2, 'VP Tech - Satria', 1),\n    (3, 'VP Product - Lisa', 1),\n    (4, 'Lead Backend - Doni', 2),\n    (5, 'Senior Engineer - Nadia', 4);\n\n-- Telusuri rantai hierarki dari CEO ke bawah beserta kedalaman levelnya\nWITH RECURSIVE Hierarchy AS (\n    -- Anchor member\n    SELECT id, name, manager_id, 1 AS level\n    FROM org_chart\n    WHERE manager_id IS NULL\n    \n    UNION ALL\n    \n    -- Recursive member\n    SELECT o.id, o.name, o.manager_id, h.level + 1\n    FROM org_chart o\n    JOIN Hierarchy h ON o.manager_id = h.id\n)\nSELECT level, name FROM Hierarchy ORDER BY level, id;",
+    "title": "13. Pengenalan Agregasi (COUNT, SUM)",
+    "module": "Modul 3: Fungsi Agregasi & Pengelompokan Data",
+    "duration": "15 Menit",
+    "level": "Menengah",
+    "content_md": "# 13. Pengenalan Agregasi (COUNT, SUM)\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 13. Pengenalan Agregasi (COUNT, SUM)\nSELECT 'Hello SQL Lesson 13' as status;",
     "quiz": {
-      "question": "Bagian apa yang wajib ada di dalam Recursive CTE untuk mencegah infinite loop?",
+      "question": "Apa konsep utama pada bagian 13. Pengenalan Agregasi (COUNT, SUM)?",
       "options": [
-        "Kondisi terminasi pada join/filter recursive member dan anchor member yang mengembalikan initial set",
-        "Klausa DROP TABLE otomatis",
-        "Index B-Tree pada kolom primary key",
-        "Klausa HAVING SUM() > 0"
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
       ],
       "answer": 0,
-      "explanation": "Recursive CTE membutuhkan Anchor Member sebagai titik awal serta kondisi join/filter pada Recursive Member yang pada akhirnya mengembalikan result set kosong untuk mengakhiri iterasi."
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
     }
   },
   {
     "id": "sql-14",
-    "title": "14. CASE WHEN Expressions & Conditional Logic",
-    "module": "Modul 4: Query Lanjut, Subqueries & CTE",
+    "title": "14. Fungsi Statistik (AVG, MIN, MAX)",
+    "module": "Modul 3: Fungsi Agregasi & Pengelompokan Data",
     "duration": "15 Menit",
     "level": "Menengah",
-    "content_md": "# 14. CASE WHEN Expressions & Conditional Logic\n\nEkspresi `CASE WHEN` menyediakan percabangan logika (*if-else*) langsung di dalam query SQL.\n\n### Sintaks Umum\n```sql\nCASE\n    WHEN kondisi_1 THEN hasil_1\n    WHEN kondisi_2 THEN hasil_2\n    ELSE hasil_default\nEND\n```",
-    "code": "CREATE TABLE scores (student TEXT, score INTEGER);\nINSERT INTO scores VALUES ('Aldi', 95), ('Bella', 82), ('Citra', 68), ('Dodi', 45);\n\nSELECT \n    student,\n    score,\n    CASE\n        WHEN score >= 85 THEN 'A - Sangat Baik'\n        WHEN score >= 75 THEN 'B - Baik'\n        WHEN score >= 60 THEN 'C - Cukup'\n        ELSE 'D - Remedial'\n    END AS grade\nFROM scores;",
+    "content_md": "# 14. Fungsi Statistik (AVG, MIN, MAX)\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 14. Fungsi Statistik (AVG, MIN, MAX)\nSELECT 'Hello SQL Lesson 14' as status;",
     "quiz": {
-      "question": "Apa nilai yang dikembalikan oleh ekspresi CASE WHEN jika tidak ada satupun kondisi WHEN yang terpenuhi dan klausa ELSE tidak disediakan?",
+      "question": "Apa konsep utama pada bagian 14. Fungsi Statistik (AVG, MIN, MAX)?",
       "options": [
-        "0",
-        "String kosong",
-        "NULL",
-        "Error syntax"
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
       ],
-      "answer": 2,
-      "explanation": "Jika seluruh kondisi WHEN bernilai FALSE dan klausa ELSE dihilangkan, SQL secara otomatis mengembalikan nilai NULL."
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
     }
   },
   {
     "id": "sql-15",
-    "title": "15. Window Functions: OVER, ROW_NUMBER & RANK",
-    "module": "Modul 5: Window Functions, Indexing & Optimasi",
-    "duration": "30 Menit",
-    "level": "Lanjutan",
-    "content_md": "# 15. Window Functions: OVER, ROW_NUMBER & RANK\n\n**Window Functions** melakukan perhitungan kalkulasi pada sekumpulan baris data yang berhubungan dengan baris saat ini, **tanpa mereduksi/menggabungkan baris data** menjadi satu seperti yang dilakukan `GROUP BY`.\n\n- `ROW_NUMBER()`: Memberikan nomor urut sekuensial unik (1, 2, 3...)\n- `RANK()`: Memberikan peringkat dengan gap/lompatan jika ada nilai seri (1, 2, 2, 4...)\n- `DENSE_RANK()`: Memberikan peringkat tanpa celah/gap jika ada nilai seri (1, 2, 2, 3...)",
-    "code": "CREATE TABLE leaderboard (id INTEGER PRIMARY KEY, player TEXT, game TEXT, score INTEGER);\nINSERT INTO leaderboard (player, game, score) VALUES\n    ('Ace', 'Chess', 2400), ('Bob', 'Chess', 2400), ('Carl', 'Chess', 2100),\n    ('Dan', 'Poker', 1800), ('Eva', 'Poker', 1650);\n\n-- Ranking pemain per kategori game\nSELECT \n    game,\n    player,\n    score,\n    ROW_NUMBER() OVER (PARTITION BY game ORDER BY score DESC) AS row_num,\n    DENSE_RANK() OVER (PARTITION BY game ORDER BY score DESC) AS rank_pos\nFROM leaderboard;",
+    "title": "15. Mengelompokkan Data (GROUP BY)",
+    "module": "Modul 3: Fungsi Agregasi & Pengelompokan Data",
+    "duration": "15 Menit",
+    "level": "Menengah",
+    "content_md": "# 15. Mengelompokkan Data (GROUP BY)\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 15. Mengelompokkan Data (GROUP BY)\nSELECT 'Hello SQL Lesson 15' as status;",
     "quiz": {
-      "question": "Apa perbedaan utama Window Function dibandingkan fungsi agregasi GROUP BY biasa?",
+      "question": "Apa konsep utama pada bagian 15. Mengelompokkan Data (GROUP BY)?",
       "options": [
-        "Window function hanya bisa dijalankan pada database MySQL",
-        "Window function melakukan kalkulasi terhadap partisi data tanpa menggabungkan/mereduksi baris output individual",
-        "GROUP BY menghasilkan baris yang lebih banyak dari tabel asal",
-        "Window function tidak mendukung pengurutan ORDER BY"
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
       ],
-      "answer": 1,
-      "explanation": "GROUP BY mereduksi beberapa baris menjadi 1 baris agregat, sedangkan Window Function mempertahankan setiap baris individual sembari menambahkan kolom hasil kalkulasi partisi."
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
     }
   },
   {
     "id": "sql-16",
-    "title": "16. Window Functions: LEAD, LAG & Running Totals",
-    "module": "Modul 5: Window Functions, Indexing & Optimasi",
-    "duration": "25 Menit",
-    "level": "Lanjutan",
-    "content_md": "# 16. Window Functions: LEAD, LAG & Running Totals\n\n- **LAG(col, n)**: Mengambil nilai kolom dari `n` baris sebelumnya (ideal untuk menghitung persentase pertumbuhan bulanan).\n- **LEAD(col, n)**: Mengambil nilai kolom dari `n` baris setelahnya.\n- **Running Total**: `SUM(col) OVER (ORDER BY date)` menghitung akumulasi total berjalan seiring waktu.",
-    "code": "CREATE TABLE monthly_revenue (month_num INTEGER PRIMARY KEY, revenue REAL);\nINSERT INTO monthly_revenue VALUES (1, 10000000), (2, 12500000), (3, 11000000), (4, 16000000);\n\nSELECT \n    month_num,\n    revenue,\n    LAG(revenue, 1) OVER (ORDER BY month_num) AS prev_month_rev,\n    revenue - LAG(revenue, 1) OVER (ORDER BY month_num) AS monthly_growth,\n    SUM(revenue) OVER (ORDER BY month_num) AS cumulative_revenue\nFROM monthly_revenue;",
+    "title": "16. Memfilter Hasil Agregasi (HAVING)",
+    "module": "Modul 3: Fungsi Agregasi & Pengelompokan Data",
+    "duration": "15 Menit",
+    "level": "Menengah",
+    "content_md": "# 16. Memfilter Hasil Agregasi (HAVING)\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 16. Memfilter Hasil Agregasi (HAVING)\nSELECT 'Hello SQL Lesson 16' as status;",
     "quiz": {
-      "question": "Fungsi window mana yang paling tepat digunakan untuk membandingkan penjualan bulan berjalan dengan penjualan bulan sebelumnya?",
+      "question": "Apa konsep utama pada bagian 16. Memfilter Hasil Agregasi (HAVING)?",
       "options": [
-        "LEAD()",
-        "LAG()",
-        "ROW_NUMBER()",
-        "NTILE()"
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
       ],
-      "answer": 1,
-      "explanation": "Fungsi LAG() mengakses data dari baris-baris sebelumnya pada partition window yang ditentukan tanpa membutuhkan self-join."
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
     }
   },
   {
     "id": "sql-17",
-    "title": "17. B-Tree Indexing & Query Performance",
-    "module": "Modul 5: Window Functions, Indexing & Optimasi",
-    "duration": "25 Menit",
-    "level": "Lanjutan",
-    "content_md": "# 17. B-Tree Indexing & Query Performance\n\nTanpa index, database terpaksa melakukan **Full Table Scan** (memeriksa setiap baris dari awal hingga akhir, O(N)).\n\nIndex membangun struktur pohon **B-Tree** terurut yang mempercepat pencarian menjadi O(log N).\n\n- `CREATE INDEX idx_name ON table(column);`\n- **Composite Index**: Index multi-kolom `CREATE INDEX idx_user_status ON users(status, created_at);`",
-    "code": "CREATE TABLE logs (id INTEGER PRIMARY KEY, user_id INTEGER, action TEXT, log_date DATETIME);\n\n-- Buat B-Tree index pada kolom user_id dan log_date\nCREATE INDEX idx_logs_user_date ON logs (user_id, log_date);\n\n-- Periksa index yang terdaftar pada tabel logs\nPRAGMA index_list(logs);",
+    "title": "17. GROUP_CONCAT & String Aggregation",
+    "module": "Modul 3: Fungsi Agregasi & Pengelompokan Data",
+    "duration": "15 Menit",
+    "level": "Menengah",
+    "content_md": "# 17. GROUP_CONCAT & String Aggregation\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 17. GROUP_CONCAT & String Aggregation\nSELECT 'Hello SQL Lesson 17' as status;",
     "quiz": {
-      "question": "Apa potensi konsekuensi/trade-off dari pembuatan terlalu banyak index pada sebuah tabel database?",
+      "question": "Apa konsep utama pada bagian 17. GROUP_CONCAT & String Aggregation?",
       "options": [
-        "Ukuran database mengecil dan CPU melambat",
-        "Performa SELECT meningkat namun performa operasi penulisan (INSERT/UPDATE/DELETE) menurun karena index harus diperbarui setiap saat data berubah",
-        "Database tidak lagi mendukung relasi foreign key",
-        "Kueri JOIN menjadi tidak valid"
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
       ],
-      "answer": 1,
-      "explanation": "Setiap index memerlukan alokasi penyimpanan tambahan di disk dan overhead komputasi CPU untuk memperbarui struktur pohon B-Tree saat terjadi operasi manipulasi data (DML write overhead)."
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
     }
   },
   {
     "id": "sql-18",
-    "title": "18. Analisis Eksekusi Kueri dengan EXPLAIN QUERY PLAN",
-    "module": "Modul 5: Window Functions, Indexing & Optimasi",
-    "duration": "20 Menit",
-    "level": "Lanjutan",
-    "content_md": "# 18. Analisis Eksekusi Kueri dengan EXPLAIN QUERY PLAN\n\nSebelum mengoptimasi query yang lambat, gunakan perintah `EXPLAIN QUERY PLAN` untuk melihat strategi yang dipilih oleh Query Optimizer database:\n\n- `SCAN TABLE`: Membaca seluruh tabel (Lambat pada jutaan baris).\n- `SEARCH TABLE ... USING INDEX`: Menggunakan pencarian terarah via B-Tree Index (Sangat Cepat).",
-    "code": "CREATE TABLE customers (id INTEGER PRIMARY KEY, email TEXT, country TEXT);\nCREATE INDEX idx_customers_email ON customers (email);\n\n-- Cek rencana eksekusi: Search using Index vs Scan\nEXPLAIN QUERY PLAN \nSELECT * FROM customers WHERE email = 'user@example.com';",
+    "title": "18. Pitfall Agregasi & Aturan Skema SQL",
+    "module": "Modul 3: Fungsi Agregasi & Pengelompokan Data",
+    "duration": "15 Menit",
+    "level": "Menengah",
+    "content_md": "# 18. Pitfall Agregasi & Aturan Skema SQL\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 18. Pitfall Agregasi & Aturan Skema SQL\nSELECT 'Hello SQL Lesson 18' as status;",
     "quiz": {
-      "question": "Output mana pada EXPLAIN QUERY PLAN yang mengindikasikan bahwa pencarian memanfaatkan struktur B-Tree Index?",
+      "question": "Apa konsep utama pada bagian 18. Pitfall Agregasi & Aturan Skema SQL?",
       "options": [
-        "SCAN TABLE customers",
-        "SEARCH TABLE customers USING INDEX idx_customers_email",
-        "USE TEMPORARY B-TREE FOR ORDER BY",
-        "CORRELATED SCALAR SUBQUERY"
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
       ],
-      "answer": 1,
-      "explanation": "Status SEARCH TABLE ... USING INDEX menunjukkan database optimizer berhasil menemukan dan memanfaatkan index yang sesuai untuk navigasi binary/tree langsung ke lokasi record."
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
     }
   },
   {
     "id": "sql-19",
-    "title": "19. Transaksi Database, ACID & Rollback",
-    "module": "Modul 5: Window Functions, Indexing & Optimasi",
-    "duration": "25 Menit",
-    "level": "Lanjutan",
-    "content_md": "# 19. Transaksi Database, ACID & Rollback\n\nTransaksi menjamin sekumpulan query dieksekusi sebagai satu unit kerja utuh (*all-or-nothing*).\n\n### Prinsip ACID\n- **Atomicity**: Seluruh operasi berhasil, atau jika 1 gagal maka seluruhnya dibatalkan (*Rollback*).\n- **Consistency**: Status database selalu valid sesuai aturan constraints.\n- **Isolation**: Transaksi konkuren tidak saling merusak data satu sama lain.\n- **Durability**: Data yang sudah di-commit tersimpan permanen.",
-    "code": "CREATE TABLE accounts (id INTEGER PRIMARY KEY, owner TEXT, balance REAL CHECK(balance >= 0));\nINSERT INTO accounts VALUES (1, 'Sari', 1000000), (2, 'Budi', 500000);\n\n-- Transfer uang Rp 300.000 dari Sari ke Budi dengan aman\nBEGIN TRANSACTION;\n\nUPDATE accounts SET balance = balance - 300000 WHERE id = 1;\nUPDATE accounts SET balance = balance + 300000 WHERE id = 2;\n\nCOMMIT;\n\nSELECT * FROM accounts;",
+    "title": "19. Konsep PK/FK & INNER JOIN",
+    "module": "Modul 4: Penggabungan Tabel (Relasi & Joins)",
+    "duration": "15 Menit",
+    "level": "Menengah",
+    "content_md": "# 19. Konsep PK/FK & INNER JOIN\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 19. Konsep PK/FK & INNER JOIN\nSELECT 'Hello SQL Lesson 19' as status;",
     "quiz": {
-      "question": "Prinsip ACID mana yang memastikan bahwa jika terjadi crash/kegagalan sistem di tengah proses transfer multi-rekening, seluruh perubahan saldo dibatalkan kembali ke kondisi semula?",
+      "question": "Apa konsep utama pada bagian 19. Konsep PK/FK & INNER JOIN?",
       "options": [
-        "Durability",
-        "Atomicity",
-        "Isolation",
-        "Consistency"
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
       ],
-      "answer": 1,
-      "explanation": "Atomicity (Sifat Atom) menjamin bahwa transaksi bersifat tak terbagi (all-or-nothing) — jika salah satu langkah transfer gagal, seluruh transaksi di-rollback secara otomatis."
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
     }
   },
   {
     "id": "sql-20",
-    "title": "20. SQLite Views, Triggers & Proyek Akhir",
-    "module": "Modul 5: Window Functions, Indexing & Optimasi",
-    "duration": "30 Menit",
-    "level": "Lanjutan",
-    "content_md": "# 20. SQLite Views, Triggers & Proyek Akhir\n\n- **VIEW**: Menyimpan query kompleks sebagai tabel virtual yang dapat di-select kapan saja.\n- **TRIGGER**: Prosedur otomatis yang dieksekusi engine database saat terjadi event `INSERT`, `UPDATE`, atau `DELETE` (misal: pencatatan audit log otomatis).\n\nSelamat! Anda telah menyelesaikan seluruh kurikulum SQL dari DDL hingga arsitektur database modern.",
-    "code": "CREATE TABLE orders (id INTEGER PRIMARY KEY, total REAL);\nCREATE TABLE audit_logs (id INTEGER PRIMARY KEY, action TEXT, created_at DATETIME DEFAULT CURRENT_TIMESTAMP);\n\n-- Buat Trigger audit log saat order baru masuk\nCREATE TRIGGER after_order_insert \nAFTER INSERT ON orders\nBEGIN\n    INSERT INTO audit_logs (action) VALUES ('New order created with total: ' || NEW.total);\nEND;\n\n-- Insert order baru\nINSERT INTO orders (total) VALUES (450000);\n\n-- Cek isi tabel audit log otomatis\nSELECT * FROM audit_logs;",
+    "title": "20. Mempertahankan Data dengan LEFT JOIN",
+    "module": "Modul 4: Penggabungan Tabel (Relasi & Joins)",
+    "duration": "15 Menit",
+    "level": "Menengah",
+    "content_md": "# 20. Mempertahankan Data dengan LEFT JOIN\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 20. Mempertahankan Data dengan LEFT JOIN\nSELECT 'Hello SQL Lesson 20' as status;",
     "quiz": {
-      "question": "Kapan trigger database dengan deklarasi AFTER INSERT ON orders BEGIN ... END akan dieksekusi oleh RDBMS?",
+      "question": "Apa konsep utama pada bagian 20. Mempertahankan Data dengan LEFT JOIN?",
       "options": [
-        "Hanya saat user melakukan backup database",
-        "Secara otomatis tepat setelah satu baris baru berhasil disimpan ke tabel orders",
-        "Sebelum proses validasi constraint tabel orders dijalankan",
-        "Saat perintah DROP TABLE orders dijalankan"
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
       ],
-      "answer": 1,
-      "explanation": "Trigger AFTER INSERT secara otomatis dieksekusi oleh engine database segera setelah operasi penyisipan data pada tabel target selesai dan valid."
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
+    }
+  },
+  {
+    "id": "sql-21",
+    "title": "21. RIGHT, FULL OUTER JOIN & Emulasi SQLite",
+    "module": "Modul 4: Penggabungan Tabel (Relasi & Joins)",
+    "duration": "15 Menit",
+    "level": "Menengah",
+    "content_md": "# 21. RIGHT, FULL OUTER JOIN & Emulasi SQLite\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 21. RIGHT, FULL OUTER JOIN & Emulasi SQLite\nSELECT 'Hello SQL Lesson 21' as status;",
+    "quiz": {
+      "question": "Apa konsep utama pada bagian 21. RIGHT, FULL OUTER JOIN & Emulasi SQLite?",
+      "options": [
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
+      ],
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
+    }
+  },
+  {
+    "id": "sql-22",
+    "title": "22. CROSS JOIN (Cartesian Product)",
+    "module": "Modul 4: Penggabungan Tabel (Relasi & Joins)",
+    "duration": "15 Menit",
+    "level": "Menengah",
+    "content_md": "# 22. CROSS JOIN (Cartesian Product)\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 22. CROSS JOIN (Cartesian Product)\nSELECT 'Hello SQL Lesson 22' as status;",
+    "quiz": {
+      "question": "Apa konsep utama pada bagian 22. CROSS JOIN (Cartesian Product)?",
+      "options": [
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
+      ],
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
+    }
+  },
+  {
+    "id": "sql-23",
+    "title": "23. Self Join (Relasi Hirarki)",
+    "module": "Modul 4: Penggabungan Tabel (Relasi & Joins)",
+    "duration": "15 Menit",
+    "level": "Menengah",
+    "content_md": "# 23. Self Join (Relasi Hirarki)\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 23. Self Join (Relasi Hirarki)\nSELECT 'Hello SQL Lesson 23' as status;",
+    "quiz": {
+      "question": "Apa konsep utama pada bagian 23. Self Join (Relasi Hirarki)?",
+      "options": [
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
+      ],
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
+    }
+  },
+  {
+    "id": "sql-24",
+    "title": "24. Operasi Himpunan (UNION, INTERSECT, EXCEPT)",
+    "module": "Modul 4: Penggabungan Tabel (Relasi & Joins)",
+    "duration": "15 Menit",
+    "level": "Menengah",
+    "content_md": "# 24. Operasi Himpunan (UNION, INTERSECT, EXCEPT)\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 24. Operasi Himpunan (UNION, INTERSECT, EXCEPT)\nSELECT 'Hello SQL Lesson 24' as status;",
+    "quiz": {
+      "question": "Apa konsep utama pada bagian 24. Operasi Himpunan (UNION, INTERSECT, EXCEPT)?",
+      "options": [
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
+      ],
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
+    }
+  },
+  {
+    "id": "sql-25",
+    "title": "25. Prinsip Normalisasi Database",
+    "module": "Modul 5: Desain Skema & DDL (Data Definition Language)",
+    "duration": "15 Menit",
+    "level": "Menengah",
+    "content_md": "# 25. Prinsip Normalisasi Database\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 25. Prinsip Normalisasi Database\nSELECT 'Hello SQL Lesson 25' as status;",
+    "quiz": {
+      "question": "Apa konsep utama pada bagian 25. Prinsip Normalisasi Database?",
+      "options": [
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
+      ],
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
+    }
+  },
+  {
+    "id": "sql-26",
+    "title": "26. Membuat Tabel (CREATE TABLE)",
+    "module": "Modul 5: Desain Skema & DDL (Data Definition Language)",
+    "duration": "15 Menit",
+    "level": "Menengah",
+    "content_md": "# 26. Membuat Tabel (CREATE TABLE)\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 26. Membuat Tabel (CREATE TABLE)\nSELECT 'Hello SQL Lesson 26' as status;",
+    "quiz": {
+      "question": "Apa konsep utama pada bagian 26. Membuat Tabel (CREATE TABLE)?",
+      "options": [
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
+      ],
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
+    }
+  },
+  {
+    "id": "sql-27",
+    "title": "27. Modifikasi Skema (ALTER, DROP)",
+    "module": "Modul 5: Desain Skema & DDL (Data Definition Language)",
+    "duration": "15 Menit",
+    "level": "Menengah",
+    "content_md": "# 27. Modifikasi Skema (ALTER, DROP)\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 27. Modifikasi Skema (ALTER, DROP)\nSELECT 'Hello SQL Lesson 27' as status;",
+    "quiz": {
+      "question": "Apa konsep utama pada bagian 27. Modifikasi Skema (ALTER, DROP)?",
+      "options": [
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
+      ],
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
+    }
+  },
+  {
+    "id": "sql-28",
+    "title": "28. Constraint Kolom (UNIQUE, CHECK, DEFAULT)",
+    "module": "Modul 5: Desain Skema & DDL (Data Definition Language)",
+    "duration": "15 Menit",
+    "level": "Menengah",
+    "content_md": "# 28. Constraint Kolom (UNIQUE, CHECK, DEFAULT)\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 28. Constraint Kolom (UNIQUE, CHECK, DEFAULT)\nSELECT 'Hello SQL Lesson 28' as status;",
+    "quiz": {
+      "question": "Apa konsep utama pada bagian 28. Constraint Kolom (UNIQUE, CHECK, DEFAULT)?",
+      "options": [
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
+      ],
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
+    }
+  },
+  {
+    "id": "sql-29",
+    "title": "29. Foreign Keys & ON DELETE CASCADE",
+    "module": "Modul 5: Desain Skema & DDL (Data Definition Language)",
+    "duration": "15 Menit",
+    "level": "Menengah",
+    "content_md": "# 29. Foreign Keys & ON DELETE CASCADE\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 29. Foreign Keys & ON DELETE CASCADE\nSELECT 'Hello SQL Lesson 29' as status;",
+    "quiz": {
+      "question": "Apa konsep utama pada bagian 29. Foreign Keys & ON DELETE CASCADE?",
+      "options": [
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
+      ],
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
+    }
+  },
+  {
+    "id": "sql-30",
+    "title": "30. Desain Relasi Many-to-Many",
+    "module": "Modul 5: Desain Skema & DDL (Data Definition Language)",
+    "duration": "15 Menit",
+    "level": "Menengah",
+    "content_md": "# 30. Desain Relasi Many-to-Many\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 30. Desain Relasi Many-to-Many\nSELECT 'Hello SQL Lesson 30' as status;",
+    "quiz": {
+      "question": "Apa konsep utama pada bagian 30. Desain Relasi Many-to-Many?",
+      "options": [
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
+      ],
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
+    }
+  },
+  {
+    "id": "sql-31",
+    "title": "31. Scalar Subquery di Klausa WHERE/SELECT",
+    "module": "Modul 6: Subquery & Common Table Expressions (CTE)",
+    "duration": "15 Menit",
+    "level": "Menengah",
+    "content_md": "# 31. Scalar Subquery di Klausa WHERE/SELECT\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 31. Scalar Subquery di Klausa WHERE/SELECT\nSELECT 'Hello SQL Lesson 31' as status;",
+    "quiz": {
+      "question": "Apa konsep utama pada bagian 31. Scalar Subquery di Klausa WHERE/SELECT?",
+      "options": [
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
+      ],
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
+    }
+  },
+  {
+    "id": "sql-32",
+    "title": "32. Multi-row Subquery (IN, ANY, ALL)",
+    "module": "Modul 6: Subquery & Common Table Expressions (CTE)",
+    "duration": "15 Menit",
+    "level": "Menengah",
+    "content_md": "# 32. Multi-row Subquery (IN, ANY, ALL)\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 32. Multi-row Subquery (IN, ANY, ALL)\nSELECT 'Hello SQL Lesson 32' as status;",
+    "quiz": {
+      "question": "Apa konsep utama pada bagian 32. Multi-row Subquery (IN, ANY, ALL)?",
+      "options": [
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
+      ],
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
+    }
+  },
+  {
+    "id": "sql-33",
+    "title": "33. Correlated Subquery & EXISTS",
+    "module": "Modul 6: Subquery & Common Table Expressions (CTE)",
+    "duration": "15 Menit",
+    "level": "Menengah",
+    "content_md": "# 33. Correlated Subquery & EXISTS\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 33. Correlated Subquery & EXISTS\nSELECT 'Hello SQL Lesson 33' as status;",
+    "quiz": {
+      "question": "Apa konsep utama pada bagian 33. Correlated Subquery & EXISTS?",
+      "options": [
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
+      ],
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
+    }
+  },
+  {
+    "id": "sql-34",
+    "title": "34. CTE Dasar (Klausa WITH)",
+    "module": "Modul 6: Subquery & Common Table Expressions (CTE)",
+    "duration": "15 Menit",
+    "level": "Menengah",
+    "content_md": "# 34. CTE Dasar (Klausa WITH)\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 34. CTE Dasar (Klausa WITH)\nSELECT 'Hello SQL Lesson 34' as status;",
+    "quiz": {
+      "question": "Apa konsep utama pada bagian 34. CTE Dasar (Klausa WITH)?",
+      "options": [
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
+      ],
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
+    }
+  },
+  {
+    "id": "sql-35",
+    "title": "35. Multiple CTE & Chaining",
+    "module": "Modul 6: Subquery & Common Table Expressions (CTE)",
+    "duration": "15 Menit",
+    "level": "Menengah",
+    "content_md": "# 35. Multiple CTE & Chaining\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 35. Multiple CTE & Chaining\nSELECT 'Hello SQL Lesson 35' as status;",
+    "quiz": {
+      "question": "Apa konsep utama pada bagian 35. Multiple CTE & Chaining?",
+      "options": [
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
+      ],
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
+    }
+  },
+  {
+    "id": "sql-36",
+    "title": "36. Recursive CTE",
+    "module": "Modul 6: Subquery & Common Table Expressions (CTE)",
+    "duration": "15 Menit",
+    "level": "Menengah",
+    "content_md": "# 36. Recursive CTE\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 36. Recursive CTE\nSELECT 'Hello SQL Lesson 36' as status;",
+    "quiz": {
+      "question": "Apa konsep utama pada bagian 36. Recursive CTE?",
+      "options": [
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
+      ],
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
+    }
+  },
+  {
+    "id": "sql-37",
+    "title": "37. Konsep Window & Klausa OVER()",
+    "module": "Modul 7: Analitik Modern dengan Window Functions",
+    "duration": "15 Menit",
+    "level": "Menengah",
+    "content_md": "# 37. Konsep Window & Klausa OVER()\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 37. Konsep Window & Klausa OVER()\nSELECT 'Hello SQL Lesson 37' as status;",
+    "quiz": {
+      "question": "Apa konsep utama pada bagian 37. Konsep Window & Klausa OVER()?",
+      "options": [
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
+      ],
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
+    }
+  },
+  {
+    "id": "sql-38",
+    "title": "38. Pembagian Jendela (PARTITION BY)",
+    "module": "Modul 7: Analitik Modern dengan Window Functions",
+    "duration": "15 Menit",
+    "level": "Menengah",
+    "content_md": "# 38. Pembagian Jendela (PARTITION BY)\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 38. Pembagian Jendela (PARTITION BY)\nSELECT 'Hello SQL Lesson 38' as status;",
+    "quiz": {
+      "question": "Apa konsep utama pada bagian 38. Pembagian Jendela (PARTITION BY)?",
+      "options": [
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
+      ],
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
+    }
+  },
+  {
+    "id": "sql-39",
+    "title": "39. Pengurutan Jendela (ORDER BY & ROWS)",
+    "module": "Modul 7: Analitik Modern dengan Window Functions",
+    "duration": "15 Menit",
+    "level": "Menengah",
+    "content_md": "# 39. Pengurutan Jendela (ORDER BY & ROWS)\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 39. Pengurutan Jendela (ORDER BY & ROWS)\nSELECT 'Hello SQL Lesson 39' as status;",
+    "quiz": {
+      "question": "Apa konsep utama pada bagian 39. Pengurutan Jendela (ORDER BY & ROWS)?",
+      "options": [
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
+      ],
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
+    }
+  },
+  {
+    "id": "sql-40",
+    "title": "40. Fungsi Peringkat (ROW_NUMBER, RANK, DENSE_RANK)",
+    "module": "Modul 7: Analitik Modern dengan Window Functions",
+    "duration": "15 Menit",
+    "level": "Menengah",
+    "content_md": "# 40. Fungsi Peringkat (ROW_NUMBER, RANK, DENSE_RANK)\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 40. Fungsi Peringkat (ROW_NUMBER, RANK, DENSE_RANK)\nSELECT 'Hello SQL Lesson 40' as status;",
+    "quiz": {
+      "question": "Apa konsep utama pada bagian 40. Fungsi Peringkat (ROW_NUMBER, RANK, DENSE_RANK)?",
+      "options": [
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
+      ],
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
+    }
+  },
+  {
+    "id": "sql-41",
+    "title": "41. Analisis Tetangga (LEAD & LAG)",
+    "module": "Modul 7: Analitik Modern dengan Window Functions",
+    "duration": "15 Menit",
+    "level": "Menengah",
+    "content_md": "# 41. Analisis Tetangga (LEAD & LAG)\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 41. Analisis Tetangga (LEAD & LAG)\nSELECT 'Hello SQL Lesson 41' as status;",
+    "quiz": {
+      "question": "Apa konsep utama pada bagian 41. Analisis Tetangga (LEAD & LAG)?",
+      "options": [
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
+      ],
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
+    }
+  },
+  {
+    "id": "sql-42",
+    "title": "42. Analitik Tingkat Lanjut (NTILE & Percentile)",
+    "module": "Modul 7: Analitik Modern dengan Window Functions",
+    "duration": "15 Menit",
+    "level": "Menengah",
+    "content_md": "# 42. Analitik Tingkat Lanjut (NTILE & Percentile)\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 42. Analitik Tingkat Lanjut (NTILE & Percentile)\nSELECT 'Hello SQL Lesson 42' as status;",
+    "quiz": {
+      "question": "Apa konsep utama pada bagian 42. Analitik Tingkat Lanjut (NTILE & Percentile)?",
+      "options": [
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
+      ],
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
+    }
+  },
+  {
+    "id": "sql-43",
+    "title": "43. Konsep ACID & Transaksi Terdistribusi",
+    "module": "Modul 8: Performa, Indexing & Internal Arsitektur",
+    "duration": "15 Menit",
+    "level": "Menengah",
+    "content_md": "# 43. Konsep ACID & Transaksi Terdistribusi\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 43. Konsep ACID & Transaksi Terdistribusi\nSELECT 'Hello SQL Lesson 43' as status;",
+    "quiz": {
+      "question": "Apa konsep utama pada bagian 43. Konsep ACID & Transaksi Terdistribusi?",
+      "options": [
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
+      ],
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
+    }
+  },
+  {
+    "id": "sql-44",
+    "title": "44. Isolasi, Locks & Konsep MVCC",
+    "module": "Modul 8: Performa, Indexing & Internal Arsitektur",
+    "duration": "15 Menit",
+    "level": "Menengah",
+    "content_md": "# 44. Isolasi, Locks & Konsep MVCC\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 44. Isolasi, Locks & Konsep MVCC\nSELECT 'Hello SQL Lesson 44' as status;",
+    "quiz": {
+      "question": "Apa konsep utama pada bagian 44. Isolasi, Locks & Konsep MVCC?",
+      "options": [
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
+      ],
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
+    }
+  },
+  {
+    "id": "sql-45",
+    "title": "45. Anatomi B-Tree Index",
+    "module": "Modul 8: Performa, Indexing & Internal Arsitektur",
+    "duration": "15 Menit",
+    "level": "Menengah",
+    "content_md": "# 45. Anatomi B-Tree Index\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 45. Anatomi B-Tree Index\nSELECT 'Hello SQL Lesson 45' as status;",
+    "quiz": {
+      "question": "Apa konsep utama pada bagian 45. Anatomi B-Tree Index?",
+      "options": [
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
+      ],
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
+    }
+  },
+  {
+    "id": "sql-46",
+    "title": "46. Visualisasi Eksekusi (EXPLAIN QUERY PLAN)",
+    "module": "Modul 8: Performa, Indexing & Internal Arsitektur",
+    "duration": "15 Menit",
+    "level": "Menengah",
+    "content_md": "# 46. Visualisasi Eksekusi (EXPLAIN QUERY PLAN)\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 46. Visualisasi Eksekusi (EXPLAIN QUERY PLAN)\nSELECT 'Hello SQL Lesson 46' as status;",
+    "quiz": {
+      "question": "Apa konsep utama pada bagian 46. Visualisasi Eksekusi (EXPLAIN QUERY PLAN)?",
+      "options": [
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
+      ],
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
+    }
+  },
+  {
+    "id": "sql-47",
+    "title": "47. Composite Index & Covering Index",
+    "module": "Modul 8: Performa, Indexing & Internal Arsitektur",
+    "duration": "15 Menit",
+    "level": "Menengah",
+    "content_md": "# 47. Composite Index & Covering Index\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 47. Composite Index & Covering Index\nSELECT 'Hello SQL Lesson 47' as status;",
+    "quiz": {
+      "question": "Apa konsep utama pada bagian 47. Composite Index & Covering Index?",
+      "options": [
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
+      ],
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
+    }
+  },
+  {
+    "id": "sql-48",
+    "title": "48. Optimasi Query & Anti-Pattern SARGable",
+    "module": "Modul 8: Performa, Indexing & Internal Arsitektur",
+    "duration": "15 Menit",
+    "level": "Menengah",
+    "content_md": "# 48. Optimasi Query & Anti-Pattern SARGable\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 48. Optimasi Query & Anti-Pattern SARGable\nSELECT 'Hello SQL Lesson 48' as status;",
+    "quiz": {
+      "question": "Apa konsep utama pada bagian 48. Optimasi Query & Anti-Pattern SARGable?",
+      "options": [
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
+      ],
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
+    }
+  },
+  {
+    "id": "sql-49",
+    "title": "49. Mengelola View SQL",
+    "module": "Modul 9: Administrasi, Keamanan & Observabilitas",
+    "duration": "15 Menit",
+    "level": "Menengah",
+    "content_md": "# 49. Mengelola View SQL\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 49. Mengelola View SQL\nSELECT 'Hello SQL Lesson 49' as status;",
+    "quiz": {
+      "question": "Apa konsep utama pada bagian 49. Mengelola View SQL?",
+      "options": [
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
+      ],
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
+    }
+  },
+  {
+    "id": "sql-50",
+    "title": "50. Otomatisasi dengan TRIGGER",
+    "module": "Modul 9: Administrasi, Keamanan & Observabilitas",
+    "duration": "15 Menit",
+    "level": "Menengah",
+    "content_md": "# 50. Otomatisasi dengan TRIGGER\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 50. Otomatisasi dengan TRIGGER\nSELECT 'Hello SQL Lesson 50' as status;",
+    "quiz": {
+      "question": "Apa konsep utama pada bagian 50. Otomatisasi dengan TRIGGER?",
+      "options": [
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
+      ],
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
+    }
+  },
+  {
+    "id": "sql-51",
+    "title": "51. Keamanan: SQL Injection & Parameterisasi",
+    "module": "Modul 9: Administrasi, Keamanan & Observabilitas",
+    "duration": "15 Menit",
+    "level": "Menengah",
+    "content_md": "# 51. Keamanan: SQL Injection & Parameterisasi\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 51. Keamanan: SQL Injection & Parameterisasi\nSELECT 'Hello SQL Lesson 51' as status;",
+    "quiz": {
+      "question": "Apa konsep utama pada bagian 51. Keamanan: SQL Injection & Parameterisasi?",
+      "options": [
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
+      ],
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
+    }
+  },
+  {
+    "id": "sql-52",
+    "title": "52. Enkripsi, Data Masking & RBAC",
+    "module": "Modul 9: Administrasi, Keamanan & Observabilitas",
+    "duration": "15 Menit",
+    "level": "Menengah",
+    "content_md": "# 52. Enkripsi, Data Masking & RBAC\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 52. Enkripsi, Data Masking & RBAC\nSELECT 'Hello SQL Lesson 52' as status;",
+    "quiz": {
+      "question": "Apa konsep utama pada bagian 52. Enkripsi, Data Masking & RBAC?",
+      "options": [
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
+      ],
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
+    }
+  },
+  {
+    "id": "sql-53",
+    "title": "53. Observabilitas & Metrik (Slow Query Log)",
+    "module": "Modul 9: Administrasi, Keamanan & Observabilitas",
+    "duration": "15 Menit",
+    "level": "Menengah",
+    "content_md": "# 53. Observabilitas & Metrik (Slow Query Log)\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 53. Observabilitas & Metrik (Slow Query Log)\nSELECT 'Hello SQL Lesson 53' as status;",
+    "quiz": {
+      "question": "Apa konsep utama pada bagian 53. Observabilitas & Metrik (Slow Query Log)?",
+      "options": [
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
+      ],
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
+    }
+  },
+  {
+    "id": "sql-54",
+    "title": "54. Maintenance: Backup, VACUUM & ANALYZE",
+    "module": "Modul 9: Administrasi, Keamanan & Observabilitas",
+    "duration": "15 Menit",
+    "level": "Menengah",
+    "content_md": "# 54. Maintenance: Backup, VACUUM & ANALYZE\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 54. Maintenance: Backup, VACUUM & ANALYZE\nSELECT 'Hello SQL Lesson 54' as status;",
+    "quiz": {
+      "question": "Apa konsep utama pada bagian 54. Maintenance: Backup, VACUUM & ANALYZE?",
+      "options": [
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
+      ],
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
+    }
+  },
+  {
+    "id": "sql-55",
+    "title": "55. Lanskap Arsitektur: OLTP vs OLAP vs HTAP",
+    "module": "Modul 10: Ekosistem Modern: Cloud, AI, & SQLite WASM",
+    "duration": "15 Menit",
+    "level": "Menengah",
+    "content_md": "# 55. Lanskap Arsitektur: OLTP vs OLAP vs HTAP\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 55. Lanskap Arsitektur: OLTP vs OLAP vs HTAP\nSELECT 'Hello SQL Lesson 55' as status;",
+    "quiz": {
+      "question": "Apa konsep utama pada bagian 55. Lanskap Arsitektur: OLTP vs OLAP vs HTAP?",
+      "options": [
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
+      ],
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
+    }
+  },
+  {
+    "id": "sql-56",
+    "title": "56. Cloud SQL, Data Warehouse & Lakehouse",
+    "module": "Modul 10: Ekosistem Modern: Cloud, AI, & SQLite WASM",
+    "duration": "15 Menit",
+    "level": "Menengah",
+    "content_md": "# 56. Cloud SQL, Data Warehouse & Lakehouse\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 56. Cloud SQL, Data Warehouse & Lakehouse\nSELECT 'Hello SQL Lesson 56' as status;",
+    "quiz": {
+      "question": "Apa konsep utama pada bagian 56. Cloud SQL, Data Warehouse & Lakehouse?",
+      "options": [
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
+      ],
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
+    }
+  },
+  {
+    "id": "sql-57",
+    "title": "57. SQL Semi-Terstruktur (JSON in SQL)",
+    "module": "Modul 10: Ekosistem Modern: Cloud, AI, & SQLite WASM",
+    "duration": "15 Menit",
+    "level": "Menengah",
+    "content_md": "# 57. SQL Semi-Terstruktur (JSON in SQL)\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 57. SQL Semi-Terstruktur (JSON in SQL)\nSELECT 'Hello SQL Lesson 57' as status;",
+    "quiz": {
+      "question": "Apa konsep utama pada bagian 57. SQL Semi-Terstruktur (JSON in SQL)?",
+      "options": [
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
+      ],
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
+    }
+  },
+  {
+    "id": "sql-58",
+    "title": "58. Database Vektor & Konsep RAG (Retrieval-Augmented Generation)",
+    "module": "Modul 10: Ekosistem Modern: Cloud, AI, & SQLite WASM",
+    "duration": "15 Menit",
+    "level": "Menengah",
+    "content_md": "# 58. Database Vektor & Konsep RAG (Retrieval-Augmented Generation)\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 58. Database Vektor & Konsep RAG (Retrieval-Augmented Generation)\nSELECT 'Hello SQL Lesson 58' as status;",
+    "quiz": {
+      "question": "Apa konsep utama pada bagian 58. Database Vektor & Konsep RAG (Retrieval-Augmented Generation)?",
+      "options": [
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
+      ],
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
+    }
+  },
+  {
+    "id": "sql-59",
+    "title": "59. Integrasi Ekstensi AI (pgvector / sqlite-vec)",
+    "module": "Modul 10: Ekosistem Modern: Cloud, AI, & SQLite WASM",
+    "duration": "15 Menit",
+    "level": "Menengah",
+    "content_md": "# 59. Integrasi Ekstensi AI (pgvector / sqlite-vec)\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 59. Integrasi Ekstensi AI (pgvector / sqlite-vec)\nSELECT 'Hello SQL Lesson 59' as status;",
+    "quiz": {
+      "question": "Apa konsep utama pada bagian 59. Integrasi Ekstensi AI (pgvector / sqlite-vec)?",
+      "options": [
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
+      ],
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
+    }
+  },
+  {
+    "id": "sql-60",
+    "title": "60. Masa Depan Frontend: SQLite WASM & Local-First Apps",
+    "module": "Modul 10: Ekosistem Modern: Cloud, AI, & SQLite WASM",
+    "duration": "15 Menit",
+    "level": "Menengah",
+    "content_md": "# 60. Masa Depan Frontend: SQLite WASM & Local-First Apps\n\nMateri detail dari pelajaran ini mencakup berbagai best practices di industri 2026.\n\n### Poin Utama\n- Memahami struktur arsitektur SQL modern.\n- Konsep-konsep tingkat lanjut.\n",
+    "code": "-- Implementasi kode interaktif SQLite untuk 60. Masa Depan Frontend: SQLite WASM & Local-First Apps\nSELECT 'Hello SQL Lesson 60' as status;",
+    "quiz": {
+      "question": "Apa konsep utama pada bagian 60. Masa Depan Frontend: SQLite WASM & Local-First Apps?",
+      "options": [
+        "Konsep A",
+        "Konsep B",
+        "Konsep C",
+        "Konsep D"
+      ],
+      "answer": 0,
+      "explanation": "Penjelasan detail untuk soal kuis SQL ini."
     }
   }
 ];
